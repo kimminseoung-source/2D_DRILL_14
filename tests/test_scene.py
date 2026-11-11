@@ -55,9 +55,10 @@ class SceneTests(unittest.TestCase):
         send(p.SDLK_p)
         send(p.SDLK_r)
         self.assertEqual(len(play_mode.birds), 10)
-        self.assertEqual(len(game_world.world[1]), 10)
+        self.assertEqual(sum(isinstance(o, Bird) for o in game_world.world[1]), 10)
+        self.assertEqual(len(game_world.world[1]), 11)
         self.assertEqual(len(game_world.world[0]), 1)
-        self.assertEqual(len(game_world.world[2]), 1)
+        self.assertEqual(len(game_world.world[2]), 0)
         self.assertFalse(play_mode.paused)
         self.assertTrue(all(b.animation.elapsed == 0 for b in play_mode.birds))
 
@@ -72,6 +73,23 @@ class SceneTests(unittest.TestCase):
         self.assertTrue(all(not layer for layer in game_world.world))
         self.assertEqual(play_mode.birds, [])
         self.assertIsNone(Bird.image)
+
+
+    def test_classroom_boy_grass_ruler_and_controls_remain(self):
+        from grass import Grass
+        from boy import Boy
+        self.assertIsInstance(game_world.world[0][0], Grass)
+        self.assertIsNotNone(game_world.world[0][0].ruler_image)
+        self.assertIsInstance(play_mode.boy, Boy)
+        self.assertIsNotNone(play_mode.boy.font)
+        self.assertTrue(all(b.y - b.DRAW_HEIGHT / 2 > 140 for b in play_mode.birds))
+        before = play_mode.boy.x
+        send(p.SDLK_RIGHT)
+        play_mode.update()
+        self.assertGreater(play_mode.boy.x, before)
+        send(p.SDLK_SPACE)
+        self.assertEqual(len(game_world.world[1]), 12)
+        play_mode.render()
 
 
 if __name__ == '__main__':

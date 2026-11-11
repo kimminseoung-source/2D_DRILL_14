@@ -24,7 +24,7 @@ LEC16_Time의 main.py, game_framework.py, game_world.py와 play_mode.py의 구�
 ## 구현 범위
 - 새마다 독립된 위치, 비행 속도, 방향과 초기 위상을 가진다. 모두 주기당 0.2초를 유지한다.
 - 새는 수평으로 이동하고 창 경계에서 방향을 바꾼다. 속도는 픽셀/초 단위로 처리한다.
-- 새 10마리를 식별할 수 있는 배치와 안내 문구를 제공한다.
+- 오늘 수업 화면의 격자, 잔디, 캐릭터, 거리 눈금과 시간 표시를 그대로 유지하고 그 위쪽 공간에 새 10마리를 추가한다. 별도 하늘 배경으로 교체하지 않는다.
 - ESC 또는 창 닫기로 종료한다. P로 일시중지/재개, R로 초기화하여 동작을 비교할 수 있게 한다.
 - 새 10마리가 하나의 스프라이트 텍스처를 공유한다.
 - 모든 코드·리소스를 저장소에 포함하고 프로젝트 기준 경로로 로드한다.
@@ -51,3 +51,6 @@ LEC16_Time의 main.py, game_framework.py, game_world.py와 play_mode.py의 구�
 독립 공개 저장소: https://github.com/kimminseoung-source/2D_DRILL_14.git
 작업 위치: C:\Users\doboh\Desktop\Universitiy\2026 - 2\2D 겜플\DRILL\DRILL 14
 PRD.md, README.md, 의존성, 전체 코드와 리소스 및 폴더 구조를 유지한 ZIP을 준비한다. e-Class 제출은 별도 단계다. 마감 시각은 전달받지 않아 임의로 정하지 않는다.
+
+## 수업 화면 유지에 대한 추가 확인
+사용자 스크린샷 기준으로 기존 잔디·캐릭터·거리 눈금·Time 표시 위에 새가 떠야 한다. 수업의 Boy/Grass/Ball과 리소스를 포함하며, main → game_framework → play_mode → game_world 흐름을 유지한다. 캐릭터의 방향키와 Space 입력도 유지한다.
