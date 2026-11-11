@@ -31,5 +31,36 @@ class AnimationTests(unittest.TestCase):
                 WingAnimation().advance(dt)
 
 
+    def test_same_ten_second_result_at_different_game_fps(self):
+        for fps in (20, 30, 60, 120, 144):
+            with self.subTest(fps=fps):
+                animation = WingAnimation(phase_cycles=0.3)
+                start = animation.frame_index
+                for _ in range(fps * 10):
+                    animation.advance(1.0 / fps)
+                self.assertAlmostEqual(animation.elapsed, 10.0)
+                self.assertEqual(animation.completed_cycles, 50)
+                self.assertEqual(animation.frame_index, start)
+
+    def test_irregular_and_large_frame_intervals_keep_phase(self):
+        animation = WingAnimation()
+        for dt in (0.01, 0.09, 0.37, 0.03, 0.5):
+            animation.advance(dt)
+            self.assertTrue(0 <= animation.frame_index < 14)
+        self.assertEqual(animation.completed_cycles, 5)
+        self.assertEqual(animation.frame_index, 0)
+        animation.advance(0.5)
+        self.assertEqual(animation.completed_cycles, 7)
+        self.assertEqual(animation.frame_index, 7)
+
+    def test_initial_phase_changes_pose_but_not_frequency(self):
+        for i in range(10):
+            animation = WingAnimation(i / 10)
+            start = animation.frame_index
+            animation.advance(1.0)
+            self.assertEqual(animation.frame_index, start)
+            self.assertEqual(animation.completed_cycles, 5)
+
+
 if __name__ == '__main__':
     unittest.main()
