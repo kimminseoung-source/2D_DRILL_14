@@ -18,6 +18,22 @@ class Bird:
         self.direction = direction
         self.animation = WingAnimation(phase_cycles)
 
+    def update(self, dt, canvas_width):
+        self.animation.advance(dt)
+        left = self.DRAW_WIDTH / 2
+        span = canvas_width - self.DRAW_WIDTH
+        if span <= 0:
+            raise ValueError('창 너비는 새의 너비보다 커야 합니다')
+        offset = self.x - left
+        unfolded = offset if self.direction > 0 else 2 * span - offset
+        phase = (unfolded + self.speed * dt) % (2 * span)
+        if phase < span:
+            self.x = left + phase
+            self.direction = 1
+        else:
+            self.x = left + 2 * span - phase
+            self.direction = -1
+
     def draw(self):
         x, y, width, height = frame_rect(self.animation.frame_index)
         flip = '' if self.direction > 0 else 'h'
