@@ -1,7 +1,7 @@
 from pico2d import load_image, get_canvas_width
 import game_framework
 from resources import asset
-from sprite_sheet import frame_rect
+from sprite_sheet import frame_rect, frame_offset, SHEET_WIDTH, SHEET_HEIGHT, COLUMNS, ROWS
 from animation import WingAnimation
 
 
@@ -40,9 +40,16 @@ class Bird:
             self.direction = -1
 
     def draw(self):
-        x, y, width, height = frame_rect(self.animation.frame_index)
+        index = self.animation.frame_index
+        x, y, width, height = frame_rect(index)
+        dx, dy = frame_offset(index)
+        scale_x = self.DRAW_WIDTH / (SHEET_WIDTH / COLUMNS)
+        scale_y = self.DRAW_HEIGHT / (SHEET_HEIGHT / ROWS)
         flip = '' if self.direction > 0 else 'h'
+        if self.direction < 0:
+            dx = -dx
         Bird.image.clip_composite_draw(
             x, y, width, height, 0, flip,
-            self.x, self.y, self.DRAW_WIDTH, self.DRAW_HEIGHT
+            self.x + dx * scale_x, self.y + dy * scale_y,
+            width * scale_x, height * scale_y
         )
