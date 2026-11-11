@@ -30,7 +30,9 @@ def quit():
     global running
     running = False
 
-frame_time=0.0
+frame_time = 0.0
+frame_rate = 0.0
+TARGET_FPS = 120.0
 
 def run(start_mode):
     global running, stack
@@ -39,19 +41,28 @@ def run(start_mode):
     try:
         start_mode.init()
 
-        global frame_time
+        global frame_time, frame_rate
         frame_time = 0.0
-        current_time = time.time()  # 현재시간저장
+        frame_rate = 0.0
+        current_time = time.perf_counter()  # 시스템 시각 보정에 영향받지 않는 경과 시간
 
         while running:
             
             stack[-1].handle_events()
+            if not running:
+                break
             stack[-1].update()
+            if not running:
+                break
             stack[-1].render()
 
-            frame_time = time.time() - current_time
-            frame_rate = 1.0 / frame_time
-            current_time += frame_time
+            remaining = 1.0 / TARGET_FPS - (time.perf_counter() - current_time)
+            if remaining > 0:
+                time.sleep(remaining)
+            now = time.perf_counter()
+            frame_time = now - current_time
+            frame_rate = 1.0 / frame_time if frame_time > 0 else 0.0
+            current_time = now
             # print(f'Frame Time:{frame_time}, Frame Rate:{frame_rate}')
 
     finally:
