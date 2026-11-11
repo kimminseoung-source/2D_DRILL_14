@@ -1,4 +1,5 @@
-from pico2d import load_image
+from pico2d import load_image, get_canvas_width
+import game_framework
 from resources import asset
 from sprite_sheet import frame_rect
 from animation import WingAnimation
@@ -18,7 +19,11 @@ class Bird:
         self.direction = direction
         self.animation = WingAnimation(phase_cycles)
 
-    def update(self, dt, canvas_width):
+    def update(self, dt=None, canvas_width=None):
+        if dt is None:
+            dt = game_framework.frame_time
+        if canvas_width is None:
+            canvas_width = get_canvas_width()
         self.animation.advance(dt)
         left = self.DRAW_WIDTH / 2
         span = canvas_width - self.DRAW_WIDTH
