@@ -6,9 +6,11 @@ from scene import Sky, HUD
 
 birds = []
 hud = None
+paused = False
 
 
 def handle_events():
+    global paused
     for event in get_events():
         if event.type == SDL_QUIT:
             game_framework.quit()
@@ -16,10 +18,18 @@ def handle_events():
         elif event.type == SDL_KEYDOWN and event.key == SDLK_ESCAPE:
             game_framework.quit()
             return
+        elif event.type == SDL_KEYDOWN and not getattr(event, 'repeat', False):
+            if event.key == SDLK_p:
+                paused = not paused
+                hud.paused = paused
+            elif event.key == SDLK_r:
+                init()
+                return
 
 
 def init():
-    global birds, hud
+    global birds, hud, paused
+    paused = False
     game_world.clear()
     width = get_canvas_width()
     birds = [
@@ -39,23 +49,29 @@ def init():
 
 
 def pause():
-    pass
+    global paused
+    paused = True
+    hud.paused = True
 
 
 def resume():
-    pass
+    global paused
+    paused = False
+    hud.paused = False
 
 
 def finish():
-    global birds, hud
+    global birds, hud, paused
     game_world.clear()
     birds = []
     hud = None
+    paused = False
     Bird.image = None
 
 
 def update():
-    game_world.update()
+    if not paused:
+        game_world.update()
 
 
 def render():
