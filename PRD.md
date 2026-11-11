@@ -2,6 +2,9 @@
 
 작성일: 2026-11-11
 
+## 수업 코드 기반
+LEC16_Time의 main.py, game_framework.py, game_world.py와 play_mode.py의 구조를 기반으로 진행한다. 기존 프레임 시간 측정과 모드/오브젝트 관리 위에 Bird를 연결한다. 수업 원본은 수정하지 않는다.
+
 ## 공지와 사용자 확인
 - 새 10마리의 정확한 비행 애니메이션을 구현한다.
 - bird_animation.png를 사용한다.
@@ -46,5 +49,5 @@
 10마리, 프레임 0~13 순환, 초당 5주기, 낮은 FPS와 다른 FPS의 동일한 시간 결과, 이동 경계, 일시중지/재개, 초기화, 종료와 이미지 로딩을 검증한다. 실행 화면도 확인한다.
 
 독립 공개 저장소: https://github.com/kimminseoung-source/2D_DRILL_14.git
-작업 위치: C:\2D_homework\DRILL 14
+작업 위치: C:\Users\doboh\Desktop\Universitiy\2026 - 2\2D 겜플\DRILL\DRILL 14
 PRD.md, README.md, 의존성, 전체 코드와 리소스 및 폴더 구조를 유지한 ZIP을 준비한다. e-Class 제출은 별도 단계다. 마감 시각은 전달받지 않아 임의로 정하지 않는다.
