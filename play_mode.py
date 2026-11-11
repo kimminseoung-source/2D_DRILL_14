@@ -2,8 +2,10 @@ from pico2d import *
 import game_world
 import game_framework
 from bird import Bird
+from scene import Sky, HUD
 
 birds = []
+hud = None
 
 
 def handle_events():
@@ -17,7 +19,7 @@ def handle_events():
 
 
 def init():
-    global birds
+    global birds, hud
     game_world.clear()
     width = get_canvas_width()
     birds = [
@@ -29,8 +31,11 @@ def init():
              phase_cycles=i / 10.0)
         for i in range(10)
     ]
+    game_world.add_oject(Sky(), 0)
     for bird in birds:
         game_world.add_oject(bird)
+    hud = HUD(birds)
+    game_world.add_oject(hud, 2)
 
 
 def pause():
@@ -42,9 +47,10 @@ def resume():
 
 
 def finish():
-    global birds
+    global birds, hud
     game_world.clear()
     birds = []
+    hud = None
     Bird.image = None
 
 
